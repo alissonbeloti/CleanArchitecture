@@ -24,6 +24,8 @@ public class UnitOfWork : IUnityOfWork
         _context = context;
     }
 
+    public StreamerDbContext StreamerDbContext => _context;
+
     public async Task<int> Complete()
     {
         return await _context.SaveChangesAsync();

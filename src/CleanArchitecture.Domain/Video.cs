@@ -13,7 +13,8 @@ public class Video: BaseDomainModel
     public int StreamerId { get; set; }
     public virtual Streamer? Streamer { get; set; }
 
-    public virtual ICollection<Actor> Atores { get; set; }
-
+    public int DirectorId { get; set; }
     public virtual Director? Director { get; set; }
+    public virtual ICollection<Actor>? Atores { get; set; }
+
 }

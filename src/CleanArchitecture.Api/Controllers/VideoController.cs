@@ -1,4 +1,7 @@
-﻿using CleanArchitecture.Application.Features.Videos.Queries.GetVideosList;
+﻿using CleanArchitecture.Application.Features.Shared.Queries;
+using CleanArchitecture.Application.Features.Videos.Queries.GetVideosList;
+using CleanArchitecture.Application.Features.Videos.Queries.PaginationVideos;
+using CleanArchitecture.Application.Features.Videos.Queries.Vms;
 
 using MediatR;
 
@@ -31,6 +34,18 @@ public class VideoController : ControllerBase
         var videos = await _mediator.Send(query);
 
         return Ok(videos);
+    }
+
+    [HttpGet("pagination", Name = "PaginationVideo")]
+    [ProducesResponseType(typeof(PaginationVm<VideosWithIncludesVm>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<IEnumerable<VideosVm>>> GetPaginationVideos(
+        [FromQuery] PaginationVideosQuery paaginationVideoParams
+    )
+    {
+
+        var paginationVideo = await _mediator.Send(paaginationVideoParams);
+
+        return Ok(paginationVideo);
     }
 
 }

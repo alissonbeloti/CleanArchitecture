@@ -65,7 +65,7 @@ public class CreateStreamerCommandHandler : IRequestHandler<CreateStreamerComman
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Não enviou email de {streamer.Id}");
+            _logger.LogError($"Não enviou email de {streamer.Id} - {ex.Message}");
         }
     }
 }

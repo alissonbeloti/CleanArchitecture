@@ -4,6 +4,8 @@ using CleanArchitecture.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+using Newtonsoft.Json.Linq;
+
 namespace CleanArchitecture.Infrastructure.Persistence;
 
 public class StreamerDbContext : DbContext
@@ -86,7 +88,17 @@ public class StreamerDbContext : DbContext
             .HasMany(v => v.Atores)
             .WithMany(a => a.Videos)
             .UsingEntity(j => j.ToTable("VideoAtor"));
+
+        modelBuilder.Entity<Director>()
+            .HasMany(v => v.Videos)
+            .WithOne(d => d.Director)
+            .HasForeignKey(d => d.DirectorId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
     }
     public DbSet<Streamer>? Streamers { get; set; }
     public DbSet<Video>? Videos { get; set; }
+    public DbSet<Director>? Directores { get; set; }
+
+    public DbSet<Actor>? Actores { get; set; }
 }

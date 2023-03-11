@@ -1,14 +1,14 @@
-﻿using CleanArchitecture.Application.Features.Streamers.Commands.CreateStreamer;
+﻿using MediatR;
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using CleanArchitecture.Application.Features.Streamers.Queries.Vms;
+using CleanArchitecture.Application.Features.Streamers.Commands.CreateStreamer;
 using CleanArchitecture.Application.Features.Streamers.Commands.DeleteStreamer;
 using CleanArchitecture.Application.Features.Streamers.Commands.UpdateStreamer;
+using CleanArchitecture.Application.Features.Streamers.Queries.GetStreamerListByUsername;
+using CleanArchitecture.Application.Features.Streamers.Queries.GetStreamerListByUrlQuery;
 
-using MediatR;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using System.Net;
 
 namespace CleanArchitecture.Api.Controllers;
 
@@ -21,6 +21,24 @@ public class StreamerController : ControllerBase
     public StreamerController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet("ByUsername/{username}", Name = "GetStreamerByUsername")]
+    [ProducesResponseType(typeof(IEnumerable<StreamerVm>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<IEnumerable<StreamerVm>>> GetStreamerByUsername(string username)
+    {
+        var query = new GetStreamerListQuery(username);
+        var streamers = await _mediator.Send(query);
+        return Ok(streamers);
+    }
+
+    [HttpGet("ByUrl/{url}", Name = "GetStreamerByUrl")]
+    [ProducesResponseType(typeof(IEnumerable<StreamerVm>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<IEnumerable<StreamerVm>>> GetStreamerByUrl(string url)
+    {
+        var query = new GetStreamerListByUrlQuery(url);
+        var streamers = await _mediator.Send(query);
+        return Ok(streamers);
     }
 
     [HttpPost(Name = "CreateStreamer")]

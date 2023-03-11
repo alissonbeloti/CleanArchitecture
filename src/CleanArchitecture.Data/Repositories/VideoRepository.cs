@@ -13,7 +13,7 @@ public class VideoRepository : RepositoryBase<Video>, IVideoRepository
 
     public async Task<Video> GetByTitle(string title)
     {
-        return await _context.Videos!.Where(v => v.Nome == title).SingleOrDefaultAsync();
+        return await _context.Videos!.Where(v => v.Nome == title).SingleOrDefaultAsync() ?? new Video();
     }
 
     public async Task<IEnumerable<Video>> GetByUserName(string username)

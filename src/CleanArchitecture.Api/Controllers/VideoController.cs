@@ -36,6 +36,7 @@ public class VideoController : ControllerBase
         return Ok(videos);
     }
 
+    [Authorize]
     [HttpGet("pagination", Name = "PaginationVideo")]
     [ProducesResponseType(typeof(PaginationVm<VideosWithIncludesVm>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IEnumerable<VideosVm>>> GetPaginationVideos(
